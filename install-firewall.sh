@@ -59,6 +59,10 @@ add_cron_job() {
     fi
 }
 
+# Add Tailscale interface to UFW
+echo "Adding Tailscale VPN rule..."
+ufw allow in on tailnet0 comment 'Tailscale VPN'
+
 # Add Cloudflare Update (Daily at 4am) - Output sent to /dev/null, errors sent to user
 add_cron_job "0 4 * * *" "$SCRIPT_DIR/update-cloudflare-firewall.sh > /dev/null"
 
@@ -72,13 +76,12 @@ bash "$SCRIPT_DIR/update-forge-ssh.sh"
 
 echo "--- Installation Complete ---"
 echo "IMPORTANT: Manually verify UFW status and delete the generic 'Allow 22' rule explicitly to finish locking down SSH."
-echo "1. Run 'ufw status numbered'\n
-Verify the new commented rules exist:\n
-'Cloudflare IP'\n
-'Laravel Forge SSH'\n
-\n
-\n
-Verify your Tailscale rule exists: 'Allow Tailscale VPN'\n
-Delete the open holes:\n
-ufw delete [number] (for the generic Port 80/443 Allow rule)\n
-ufw delete [number] (for the generic Port 22 Allow rule)"
+echo "1. Run 'ufw status numbered'
+Verify the new commented rules exist:
+    'Cloudflare IP'
+    'Laravel Forge SSH'
+
+Verify the Tailscale rule exists: 'Allow Tailscale VPN'
+Delete the open holes:
+    ufw delete [number] (for the generic Port 80/443 Allow rule)
+    ufw delete [number] (for the generic Port 22 Allow rule)"
