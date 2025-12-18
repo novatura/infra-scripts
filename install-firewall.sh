@@ -8,7 +8,7 @@ REPO_NAME="infra-scripts"
 BRANCH="main"
 
 BASE_URL="https://raw.githubusercontent.com/$REPO_OWNER/$REPO_NAME/$BRANCH"
-SCRIPT_DIR="/root/scripts"
+SCRIPT_DIR="/home/forge/scripts"
 
 # --- CHECK ROOT ---
 if [ "$EUID" -ne 0 ]; then
